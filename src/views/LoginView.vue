@@ -56,12 +56,15 @@ export default {
   methods: {
     submit() {
       this.error = ""
-      axios.post("http://127.0.0.1:8080/api/auth/login", {"username":this.email,"password":this.password})
+      axios.get("http://localhost:8080/api/test/logout",{"withCredentials": true}) // clear cookie
+      axios.post("http://localhost:8080/api/auth/login", {"username":this.email,"password":this.password},{"withCredentials": true}) // set cookie
       .then(response => {
+        console.log(response)
         if (response.data.accessToken) {
           store.currentUser = response.data
           console.log(store.currentUser)
-          this.$router.push({name:'home'})
+          axios.get("http://localhost:8080/api/auth/refreshToken",{"withCredentials": true}) // check cookie
+          //this.$router.push({name:'home'})
         }
       })
       .catch(error => {
