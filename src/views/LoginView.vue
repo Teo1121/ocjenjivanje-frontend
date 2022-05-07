@@ -16,7 +16,6 @@
                 placeholder="Email"
                 required
               />
-              
             </div>
             <div class="form-outline mb-3">
               <input
@@ -27,8 +26,8 @@
                 placeholder="Password"
                 required
               />
-              <p style="color:red">
-                {{error}}
+              <p style="color: red">
+                {{ error }}
               </p>
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
@@ -46,31 +45,44 @@ import store from "@/store";
 
 export default {
   name: "LoginView",
-  data(){
+  data() {
     return {
       email: "",
       password: "",
       error: "",
-    }
+    };
+  },
+  mounted() {
+    axios
+      .get("http://localhost:8080/api/auth/refreshToken", {
+        withCredentials: true,
+      })
+      .then((response) => {
+        if (response.data.accessToken) {
+          store.currentUser = response.data;
+          this.$router.push({ name: "home" });
+        }
+      });
   },
   methods: {
     submit() {
-      this.error = ""
-      axios.get("http://localhost:8080/api/test/logout",{"withCredentials": true}) // clear cookie
-      axios.post("http://localhost:8080/api/auth/login", {"username":this.email,"password":this.password},{"withCredentials": true}) // set cookie
-      .then(response => {
-        console.log(response)
-        if (response.data.accessToken) {
-          store.currentUser = response.data
-          console.log(store.currentUser)
-          axios.get("http://localhost:8080/api/auth/refreshToken",{"withCredentials": true}) // check cookie
-          //this.$router.push({name:'home'})
-        }
-      })
-      .catch(error => {
-        this.error = error.message
-      })
-    }
-  }
-}
+      this.error = "";
+      axios
+        .post(
+          "http://localhost:8080/api/auth/login",
+          { username: this.email, password: this.password },
+          { withCredentials: true }
+        )
+        .then((response) => {
+          if (response.data.accessToken) {
+            store.currentUser = response.data;
+            this.$router.push({ name: "home" });
+          }
+        })
+        .catch((error) => {
+          this.error = error.message;
+        });
+    },
+  },
+};
 </script>
