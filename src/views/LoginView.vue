@@ -62,6 +62,9 @@ export default {
           store.currentUser = response.data;
           this.$router.push({ name: "home" });
         }
+      })
+      .catch((error) => {
+        console.log("refresh token exipered or non existant");
       });
   },
   methods: {

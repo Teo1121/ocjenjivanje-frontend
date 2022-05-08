@@ -1,3 +1,4 @@
-export default {
-    currentUser:null
-}
+import { reactive } from "vue";
+export default reactive({
+  currentUser: null,
+});
