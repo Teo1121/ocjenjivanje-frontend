@@ -1,5 +1,6 @@
 <template>
   <nav>
+    <p v-if="isLoggedIn">Welcome {{ store.currentUser.username }}</p>
     <router-link to="/">Home</router-link> |
     <router-link to="/list">Review</router-link> |
     <router-link v-if="!isLoggedIn" to="/login">Login</router-link>
