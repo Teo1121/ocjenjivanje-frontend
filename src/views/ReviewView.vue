@@ -1,56 +1,27 @@
 <template>
   <p>{{ professor }}</p>
-  <form @submit="submit()" action="#" onsubmit="return false">
+  <div class="review" v-for="rev in review" :key="rev">
+    <p class="title">{{ rev.studentsName }} ocjena:{{ rev.score }}</p>
     <div>
-      <label for="score1"
-        >1<br />
+      <p class="comment">{{ rev.comment }}</p>
+    </div>
+  </div>
+  <form
+    style="margin-top: 2rem"
+    v-if="store.currentUser"
+    @submit="submit()"
+    action="#"
+    onsubmit="return false"
+  >
+    <div>
+      <label for="score"
+        >Score: {{ score }}<br />
         <input
-          type="radio"
-          id="score1"
-          name="score"
-          value="1"
-          v-model="score"
-        />
-      </label>
-      <label for="score2"
-        >2<br />
-        <input
-          type="radio"
-          id="score2"
-          name="score"
-          value="2"
-          v-model="score"
-        />
-      </label>
-
-      <label for="score3"
-        >3<br />
-        <input
-          type="radio"
-          id="score3"
-          name="score"
-          value="3"
-          v-model="score"
-        />
-      </label>
-
-      <label for="score4"
-        >4<br />
-        <input
-          type="radio"
-          id="score4"
-          name="score"
-          value="4"
-          v-model="score"
-        />
-      </label>
-      <label for="score5"
-        >5<br />
-        <input
-          type="radio"
-          id="score5"
-          name="score"
-          value="5"
+          type="range"
+          class="form-range"
+          min="1"
+          max="5"
+          id="score"
           v-model="score"
         />
       </label>
@@ -67,6 +38,9 @@
         />
       </label>
     </div>
+    <p style="color: red">
+      {{ error }}
+    </p>
     <div>
       <label for="anon" style="margin-right: 2rem"
         >Anonymous:
@@ -85,15 +59,32 @@ export default {
   name: "Review",
   data() {
     return {
+      review: [],
       professor: "",
-      score: "0",
+      score: "3",
       comment: "",
       anonymous: false,
       store,
+      error: "",
     };
   },
   mounted() {
     this.professor = this.$route.query.name;
+    if (this.store.currentUser == null) {
+      return;
+    }
+    axios
+      .get("http://localhost:8080/api/review/list/reviews/" + this.professor, {
+        headers: {
+          Authorization: "Bearer " + this.store.currentUser.accessToken,
+        },
+      })
+      .then((response) => {
+        this.review = response.data;
+      })
+      .catch((error) => {
+        this.error = error.message;
+      });
   },
   methods: {
     submit() {
@@ -129,5 +120,21 @@ export default {
 label {
   margin-right: 0.5rem;
   margin-left: 0.5rem;
+}
+.review {
+  width: min-content;
+  margin: 1rem;
+  p.title {
+    margin-bottom: 0;
+    text-align: left;
+    width: max-content;
+  }
+  p.comment {
+    margin: 1rem;
+  }
+  div {
+    border: solid;
+    width: max-content;
+  }
 }
 </style>

@@ -4,7 +4,7 @@
     <router-link to="/">Home</router-link> |
     <router-link to="/list">Review</router-link> |
     <router-link v-if="!isLoggedIn" to="/login">Login</router-link>
-    <a href="#" v-if="isLoggedIn" @click="submit()">Logout</a>
+    <a href="/" v-if="isLoggedIn" @click="submit()">Logout</a>
   </nav>
   <router-view />
 </template>
@@ -31,7 +31,7 @@ export default {
         .post(
           "http://localhost:8080/api/auth/logout",
           {
-            userId: this.store.currentUser.userId,
+            userId: this.store.currentUser.id,
           },
           {
             withCredentials: true,
@@ -66,7 +66,7 @@ export default {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
+  text-align: -webkit-center;
   color: #2c3e50;
 }
 

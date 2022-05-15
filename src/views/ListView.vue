@@ -1,13 +1,14 @@
 <template>
   <h1>This the review page</h1>
   <div>
-    <p
+    <a
+      href="#"
       @click="click(professor.name)"
       v-for="professor in professorList"
       v-bind:key="professor"
     >
       {{ professor.name + ": " + professor.details }}
-    </p>
+    </a>
   </div>
 </template>
 
