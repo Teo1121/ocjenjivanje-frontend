@@ -1,14 +1,14 @@
 <template>
   <p>{{ professor }}</p>
-  <div class="review" v-for="rev in review" :key="rev">
-    <p class="title">{{ rev.studentsName }} ocjena:{{ rev.score }}</p>
+  <div class="review" v-for="review in reviews" :key="review">
+    <p class="title">{{ review.studentsName }}, ocjena:{{ review.score }}</p>
     <div>
-      <p class="comment">{{ rev.comment }}</p>
+      <p class="comment">{{ review.comment }}</p>
     </div>
   </div>
   <form
     style="margin-top: 2rem"
-    v-if="store.currentUser"
+    v-if="store.currentUser && store.currentUser.roles.includes('ROLE_USER')"
     @submit="submit()"
     action="#"
     onsubmit="return false"
@@ -59,7 +59,7 @@ export default {
   name: "Review",
   data() {
     return {
-      review: [],
+      reviews: [],
       professor: "",
       score: "3",
       comment: "",
@@ -70,17 +70,20 @@ export default {
   },
   mounted() {
     this.professor = this.$route.query.name;
+    if (!this.professor) {
+      this.$router.push({ name: "list" });
+    }
     if (this.store.currentUser == null) {
       return;
     }
     axios
-      .get("http://localhost:8080/api/review/list/reviews/" + this.professor, {
+      .get("http://localhost:8080/api/review/" + this.professor, {
         headers: {
           Authorization: "Bearer " + this.store.currentUser.accessToken,
         },
       })
       .then((response) => {
-        this.review = response.data;
+        this.reviews = response.data;
       })
       .catch((error) => {
         this.error = error.message;
@@ -89,6 +92,10 @@ export default {
   methods: {
     submit() {
       this.error = "";
+      if (this.store.currentUser.roles.includes("ROLE_ADMIN")) {
+        this.error = "Admins shouldn't post reviews";
+        return;
+      }
       axios
         .post(
           "http://localhost:8080/api/review/post",
