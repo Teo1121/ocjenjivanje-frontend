@@ -86,6 +86,8 @@ export default {
         this.reviews = response.data;
       })
       .catch((error) => {
+        localStorage.clear();
+        this.$router.push({ name: "list" });
         this.error = error.message;
       });
   },
@@ -98,7 +100,7 @@ export default {
       }
       axios
         .post(
-          "http://localhost:8080/api/review/post",
+          "http://localhost:8080/api/review",
           {
             professorsName: this.professor,
             studentsName: this.store.currentUser.username,

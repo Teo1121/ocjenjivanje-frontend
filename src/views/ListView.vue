@@ -58,7 +58,7 @@ export default {
     if (localStorage.getItem("professorList") != null) {
       this.professorList = JSON.parse(localStorage.getItem("professorList"));
     } else {
-      axios.get("http://localhost:8080/api/professor/list").then((response) => {
+      axios.get("http://localhost:8080/api/professor").then((response) => {
         this.professorList = response.data;
         localStorage.setItem("professorList", JSON.stringify(response.data));
       });
@@ -77,7 +77,7 @@ export default {
     },
     submit(name) {
       axios
-        .post("http://localhost:8080/api/professor/post", this.newProfessor, {
+        .post("http://localhost:8080/api/professor", this.newProfessor, {
           headers: {
             Authorization: "Bearer " + this.store.currentUser.accessToken,
           },
