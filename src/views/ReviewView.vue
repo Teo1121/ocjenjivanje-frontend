@@ -73,23 +73,25 @@ export default {
     if (!this.professor) {
       this.$router.push({ name: "list" });
     }
-    if (this.store.currentUser == null) {
-      return;
-    }
-    axios
-      .get("http://localhost:8080/api/review/" + this.professor, {
-        headers: {
-          Authorization: "Bearer " + this.store.currentUser.accessToken,
-        },
-      })
-      .then((response) => {
-        this.reviews = response.data;
-      })
-      .catch((error) => {
-        localStorage.clear();
-        this.$router.push({ name: "list" });
-        this.error = error.message;
-      });
+    setTimeout(() => {
+      if (!this.store.currentUser) {
+        return;
+      }
+      axios
+        .get("http://localhost:8080/api/review/" + this.professor, {
+          headers: {
+            Authorization: "Bearer " + this.store.currentUser.accessToken,
+          },
+        })
+        .then((response) => {
+          this.reviews = response.data;
+        })
+        .catch((error) => {
+          localStorage.clear();
+          this.$router.push({ name: "list" });
+          this.error = error.message;
+        });
+    }, 500);
   },
   methods: {
     submit() {

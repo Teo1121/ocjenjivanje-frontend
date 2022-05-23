@@ -30,6 +30,9 @@
       {{ error }}
     </p>
     <div>
+      <button type="button" @click="del()" class="btn btn-primary me-4">
+        Delete
+      </button>
       <button type="submit" class="btn btn-primary">Submit</button>
     </div>
   </form>
@@ -100,6 +103,21 @@ export default {
         .then((response) => {
           localStorage.clear();
           this.$router.push({ name: "home" });
+        })
+        .catch((error) => {
+          this.error = error.message;
+        });
+    },
+    del() {
+      axios
+        .delete("http://localhost:8080/api/professor/" + this.professor.name, {
+          headers: {
+            Authorization: "Bearer " + this.store.currentUser.accessToken,
+          },
+        })
+        .then((response) => {
+          localStorage.clear();
+          this.$router.push({ name: "list" });
         })
         .catch((error) => {
           this.error = error.message;
