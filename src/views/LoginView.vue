@@ -42,6 +42,7 @@
 <script>
 import axios from "axios";
 import store from "@/store";
+import { JSEncrypt } from "jsencrypt";
 
 export default {
   name: "LoginView",
@@ -50,6 +51,7 @@ export default {
       email: "",
       password: "",
       error: "",
+      publicKey: "",
     };
   },
   mounted() {
@@ -66,14 +68,23 @@ export default {
       .catch((error) => {
         console.log("refresh token exipered or non existant");
       });
+
+    axios.get("http://localhost:8080/api/auth/key").then((response) => {
+      if (response.data.message) {
+        this.publicKey = response.data.message;
+      }
+    });
   },
   methods: {
     submit() {
       this.error = "";
+      let encrypt = new JSEncrypt();
+      encrypt.setPublicKey(this.publicKey);
+      let pass = encrypt.encrypt(this.password);
       axios
         .post(
           "http://localhost:8080/api/auth/login",
-          { username: this.email, password: this.password },
+          { username: this.email, password: pass },
           { withCredentials: true }
         )
         .then((response) => {
