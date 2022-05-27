@@ -1,7 +1,7 @@
 <template>
-  <h1>This the review page</h1>
+  <h1>List of professors</h1>
   <div v-for="professor in professorList" v-bind:key="professor">
-    <a href="#" @click="click(professor.name)">
+    <a href="#" @click="click(professor)">
       {{ professor.name + ": " + professor.details }} </a
     ><br />
   </div>
@@ -65,14 +65,14 @@ export default {
     }
   },
   methods: {
-    click(name) {
-      if (
-        this.store.currentUser &&
-        this.store.currentUser.roles.includes("ROLE_ADMIN")
-      ) {
-        this.$router.push({ name: "admin", query: { name } });
-      } else {
-        this.$router.push({ name: "review", query: { name } });
+    click(prof) {
+      if (this.store.currentUser) {
+        localStorage.setItem("selectedProf", JSON.stringify(prof));
+        if (this.store.currentUser.roles.includes("ROLE_ADMIN")) {
+          this.$router.push({ name: "admin" });
+        } else if (this.store.currentUser.roles.includes("ROLE_USER")) {
+          this.$router.push({ name: "review" });
+        }
       }
     },
     submit(name) {

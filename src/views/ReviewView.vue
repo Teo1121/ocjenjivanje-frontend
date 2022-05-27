@@ -69,7 +69,8 @@ export default {
     };
   },
   mounted() {
-    this.professor = this.$route.query.name;
+    this.professor = JSON.parse(localStorage.getItem("selectedProf")).name;
+    console.log(this.professor);
     if (!this.professor) {
       this.$router.push({ name: "list" });
     }

@@ -1,5 +1,5 @@
 <template>
-  <p>{{ professor.name }}: {{ professor.details }}</p>
+  <p>{{ selectedProfessor.name }}: {{ selectedProfessor.details }}</p>
   <form
     style="margin-top: 2rem"
     v-if="store.currentUser && store.currentUser.roles.includes('ROLE_ADMIN')"
@@ -47,43 +47,29 @@ export default {
   data() {
     return {
       reviews: [],
-      professor: { name: "", details: "" },
+      selectedProfessor: {},
       newName: "",
       newDetails: "",
       store,
       error: "",
     };
   },
-  mounted() {
-    if (!this.$route.query.name) {
+  created() {
+    this.selectedProfessor = JSON.parse(localStorage.getItem("selectedProf"));
+    console.log(this.selectedProfessor);
+    if (!this.selectedProfessor) {
       this.$router.push({ name: "list" });
     }
-    if (this.store.currentUser == null) {
+    if (!this.store.currentUser) {
       this.$router.push({ name: "login" });
-    }
-    if (!this.store.currentUser.roles.includes("ROLE_ADMIN")) {
+    } else if (!this.store.currentUser.roles.includes("ROLE_ADMIN")) {
       this.$router.push({ name: "home" });
     }
-
-    axios
-      .get("http://localhost:8080/api/professor/" + this.$route.query.name, {
-        headers: {
-          Authorization: "Bearer " + this.store.currentUser.accessToken,
-        },
-      })
-      .then((response) => {
-        this.professor = response.data;
-      })
-      .catch((error) => {
-        localStorage.clear();
-        this.$router.push({ name: "list" });
-        this.error = error.message;
-      });
   },
   methods: {
     submit() {
-      let professorName = this.professor.name;
-      let newProfessor = this.professor;
+      let newProfessor = { ...this.selectedProfessor };
+      console.log(newProfessor);
       if (this.newName) {
         newProfessor.name = this.newName;
       }
@@ -92,7 +78,7 @@ export default {
       }
       axios
         .put(
-          "http://localhost:8080/api/professor/" + professorName,
+          "http://localhost:8080/api/professor/" + this.selectedProfessor.name,
           newProfessor,
           {
             headers: {
@@ -110,11 +96,14 @@ export default {
     },
     del() {
       axios
-        .delete("http://localhost:8080/api/professor/" + this.professor.name, {
-          headers: {
-            Authorization: "Bearer " + this.store.currentUser.accessToken,
-          },
-        })
+        .delete(
+          "http://localhost:8080/api/professor/" + this.selectedProfessor.name,
+          {
+            headers: {
+              Authorization: "Bearer " + this.store.currentUser.accessToken,
+            },
+          }
+        )
         .then((response) => {
           localStorage.clear();
           this.$router.push({ name: "list" });

@@ -2,7 +2,12 @@
   <nav>
     <p v-if="isLoggedIn">Welcome {{ store.currentUser.username }}</p>
     <router-link to="/">Home</router-link> |
-    <router-link to="/list">Review</router-link> |
+    <router-link to="/list">{{
+      store.currentUser && store.currentUser.roles.includes("ROLE_ADMIN")
+        ? "Professor list"
+        : "Review"
+    }}</router-link>
+    |
     <router-link v-if="!isLoggedIn" to="/login">Login</router-link>
     <a href="/" v-if="isLoggedIn" @click="submit()">Logout</a>
   </nav>
