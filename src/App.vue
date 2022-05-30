@@ -4,12 +4,22 @@
     <router-link to="/">Home</router-link> |
     <router-link to="/list">{{
       store.currentUser && store.currentUser.roles.includes("ROLE_ADMIN")
-        ? "Professor list"
+        ? "Professor List"
         : "Review"
     }}</router-link>
+    <span
+      v-if="store.currentUser && store.currentUser.roles.includes('ROLE_ADMIN')"
+    >
+      |
+    </span>
+    <router-link
+      v-if="store.currentUser && store.currentUser.roles.includes('ROLE_ADMIN')"
+      to="/users"
+      >Users</router-link
+    >
     |
-    <router-link v-if="!isLoggedIn" to="/login">Login</router-link>
-    <a href="/" v-if="isLoggedIn" @click="submit()">Logout</a>
+    <router-link v-if="!store.currentUser" to="/login">Login</router-link>
+    <a href="/" v-if="store.currentUser" @click="submit()">Logout</a>
   </nav>
   <router-view />
 </template>
@@ -24,11 +34,6 @@ export default {
     return {
       store,
     };
-  },
-  computed: {
-    isLoggedIn() {
-      return store.currentUser != null;
-    },
   },
   methods: {
     submit() {
@@ -46,6 +51,7 @@ export default {
           }
         )
         .then((response) => {
+          localStorage.clear();
           this.store.currentUser = null;
         });
     },

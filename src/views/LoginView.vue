@@ -69,8 +69,14 @@ export default {
         console.log("refresh token exipered or non existant");
       });
 
+    this.publicKey = localStorage.getItem("publicKey");
+    if (this.publicKey) {
+      return;
+    }
+
     axios.get("http://localhost:8080/api/auth/key").then((response) => {
       if (response.data.message) {
+        localStorage.setItem("publicKey", response.data.message);
         this.publicKey = response.data.message;
       }
     });

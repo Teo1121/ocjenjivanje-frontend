@@ -92,7 +92,7 @@ export default {
           this.$router.push({ name: "list" });
           this.error = error.message;
         });
-    }, 500);
+    }, 200);
   },
   methods: {
     submit() {
