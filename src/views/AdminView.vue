@@ -1,5 +1,17 @@
 <template>
   <p>{{ selectedProfessor.name }}: {{ selectedProfessor.details }}</p>
+  <div
+    v-if="
+      store.currentUser && store.currentUser.roles.includes('ROLE_MODERATOR')
+    "
+  >
+    <div class="review" v-for="review in reviews" :key="review">
+      <p class="title">{{ review.studentsName }}, ocjena:{{ review.score }}</p>
+      <div>
+        <p class="comment">{{ review.comment }}</p>
+      </div>
+    </div>
+  </div>
   <form
     style="margin-top: 2rem"
     v-if="store.currentUser && store.currentUser.roles.includes('ROLE_ADMIN')"
@@ -56,15 +68,38 @@ export default {
   },
   created() {
     this.selectedProfessor = JSON.parse(localStorage.getItem("selectedProf"));
-    console.log(this.selectedProfessor);
     if (!this.selectedProfessor) {
       this.$router.push({ name: "list" });
     }
-    if (!this.store.currentUser) {
-      this.$router.push({ name: "login" });
-    } else if (!this.store.currentUser.roles.includes("ROLE_ADMIN")) {
-      this.$router.push({ name: "home" });
-    }
+  },
+  mounted() {
+    setTimeout(() => {
+      if (!this.store.currentUser) {
+        this.$router.push({ name: "login" });
+      } else if (
+        !this.store.currentUser.roles.includes("ROLE_ADMIN") &&
+        !this.store.currentUser.roles.includes("ROLE_MODERATOR")
+      ) {
+        this.$router.push({ name: "home" });
+      }
+      axios
+        .get(
+          "http://localhost:8080/api/review/" + this.selectedProfessor.name,
+          {
+            headers: {
+              Authorization: "Bearer " + this.store.currentUser.accessToken,
+            },
+          }
+        )
+        .then((response) => {
+          this.reviews = response.data;
+        })
+        .catch((error) => {
+          localStorage.clear();
+          this.$router.push({ name: "list" });
+          this.error = error.message;
+        });
+    }, 200);
   },
   methods: {
     submit() {

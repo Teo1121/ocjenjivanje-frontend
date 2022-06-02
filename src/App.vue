@@ -1,6 +1,6 @@
 <template>
   <nav>
-    <p v-if="isLoggedIn">Welcome {{ store.currentUser.username }}</p>
+    <p v-if="store.currentUser">Welcome {{ store.currentUser.username }}</p>
     <router-link to="/">Home</router-link> |
     <router-link to="/list">{{
       store.currentUser && store.currentUser.roles.includes("ROLE_ADMIN")

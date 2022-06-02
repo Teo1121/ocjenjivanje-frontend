@@ -84,7 +84,7 @@ export default {
         this.$router.push({ name: "home" });
       }
       axios
-        .get("http://localhost:8080/api/auth/users", {
+        .get("http://localhost:8080/api/user/all", {
           headers: {
             Authorization: "Bearer " + this.store.currentUser.accessToken,
           },
@@ -111,8 +111,8 @@ export default {
   methods: {
     click(user) {
       if (this.store.currentUser.roles.includes("ROLE_ADMIN")) {
-        alert("not implemented");
-        //this.$router.push({ name: "userdetail", query: { name: user.name } });
+        //alert("not implemented");
+        this.$router.push({ name: "userdetail", query: { name: user } });
       }
     },
     submit() {

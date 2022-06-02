@@ -68,7 +68,10 @@ export default {
     click(prof) {
       if (this.store.currentUser) {
         localStorage.setItem("selectedProf", JSON.stringify(prof));
-        if (this.store.currentUser.roles.includes("ROLE_ADMIN")) {
+        if (
+          this.store.currentUser.roles.includes("ROLE_ADMIN") ||
+          this.store.currentUser.roles.includes("ROLE_MODERATOR")
+        ) {
           this.$router.push({ name: "admin" });
         } else if (this.store.currentUser.roles.includes("ROLE_USER")) {
           this.$router.push({ name: "review" });
