@@ -39,7 +39,7 @@ export default {
     submit() {
       axios
         .post(
-          "http://localhost:8080/api/auth/logout",
+          "https://powerful-scrubland-44605.herokuapp.com/api/auth/logout",
           {
             userId: this.store.currentUser.id,
           },
@@ -58,9 +58,12 @@ export default {
   },
   mounted() {
     axios
-      .get("http://localhost:8080/api/auth/refreshToken", {
-        withCredentials: true,
-      })
+      .get(
+        "https://powerful-scrubland-44605.herokuapp.com/api/auth/refreshToken",
+        {
+          withCredentials: true,
+        }
+      )
       .then((response) => {
         if (response.data.accessToken) {
           store.currentUser = response.data;
@@ -89,7 +92,7 @@ nav {
     color: #2c3e50;
 
     &.router-link-exact-active {
-      color: #42b983;
+      color: #6d5f9d;
     }
   }
 }

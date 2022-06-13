@@ -72,11 +72,15 @@ export default {
         return;
       }
       axios
-        .get("http://localhost:8080/api/user/" + this.$route.query.name, {
-          headers: {
-            Authorization: "Bearer " + this.store.currentUser.accessToken,
-          },
-        })
+        .get(
+          "https://powerful-scrubland-44605.herokuapp.com/api/user/" +
+            this.$route.query.name,
+          {
+            headers: {
+              Authorization: "Bearer " + this.store.currentUser.accessToken,
+            },
+          }
+        )
         .then((response) => {
           this.user = response.data;
         })
@@ -90,21 +94,27 @@ export default {
       return;
     }
 
-    axios.get("http://localhost:8080/api/auth/key").then((response) => {
-      if (response.data.message) {
-        localStorage.setItem("publicKey", response.data.message);
-        this.publicKey = response.data.message;
-      }
-    });
+    axios
+      .get("https://powerful-scrubland-44605.herokuapp.com/api/auth/key")
+      .then((response) => {
+        if (response.data.message) {
+          localStorage.setItem("publicKey", response.data.message);
+          this.publicKey = response.data.message;
+        }
+      });
   },
   methods: {
     del() {
       axios
-        .delete("http://localhost:8080/api/user/" + this.$route.query.name, {
-          headers: {
-            Authorization: "Bearer " + this.store.currentUser.accessToken,
-          },
-        })
+        .delete(
+          "https://powerful-scrubland-44605.herokuapp.com/api/user/" +
+            this.$route.query.name,
+          {
+            headers: {
+              Authorization: "Bearer " + this.store.currentUser.accessToken,
+            },
+          }
+        )
         .then((response) => {
           this.$router.push({ name: "users" });
         })
@@ -127,7 +137,8 @@ export default {
       }
       axios
         .put(
-          "http://localhost:8080/api/user/" + this.$route.query.name,
+          "https://powerful-scrubland-44605.herokuapp.com/api/user/" +
+            this.$route.query.name,
           this.newUser,
           {
             headers: {

@@ -81,10 +81,12 @@ export default {
     if (localStorage.getItem("professorList") != null) {
       this.professorList = JSON.parse(localStorage.getItem("professorList"));
     } else {
-      axios.get("http://localhost:8080/api/professor").then((response) => {
-        this.professorList = response.data;
-        localStorage.setItem("professorList", JSON.stringify(response.data));
-      });
+      axios
+        .get("https://powerful-scrubland-44605.herokuapp.com/api/professor")
+        .then((response) => {
+          this.professorList = response.data;
+          localStorage.setItem("professorList", JSON.stringify(response.data));
+        });
     }
     setTimeout(() => {
       if (
@@ -92,11 +94,14 @@ export default {
         store.currentUser.roles.includes("ROLE_MODERATOR")
       ) {
         axios
-          .get("http://localhost:8080/api/review/stats", {
-            headers: {
-              Authorization: "Bearer " + this.store.currentUser.accessToken,
-            },
-          })
+          .get(
+            "https://powerful-scrubland-44605.herokuapp.com/api/review/stats",
+            {
+              headers: {
+                Authorization: "Bearer " + this.store.currentUser.accessToken,
+              },
+            }
+          )
           .then((response) => {
             this.chartData = response.data;
           });
@@ -120,11 +125,15 @@ export default {
     },
     submit(name) {
       axios
-        .post("http://localhost:8080/api/professor", this.newProfessor, {
-          headers: {
-            Authorization: "Bearer " + this.store.currentUser.accessToken,
-          },
-        })
+        .post(
+          "https://powerful-scrubland-44605.herokuapp.com/api/professor",
+          this.newProfessor,
+          {
+            headers: {
+              Authorization: "Bearer " + this.store.currentUser.accessToken,
+            },
+          }
+        )
         .then((response) => {
           localStorage.removeItem("professorList");
           this.$router.push({ name: "home" });

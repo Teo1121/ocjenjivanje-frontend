@@ -78,11 +78,15 @@ export default {
         return;
       }
       axios
-        .get("http://localhost:8080/api/review/" + this.professor, {
-          headers: {
-            Authorization: "Bearer " + this.store.currentUser.accessToken,
-          },
-        })
+        .get(
+          "https://powerful-scrubland-44605.herokuapp.com/api/review/" +
+            this.professor,
+          {
+            headers: {
+              Authorization: "Bearer " + this.store.currentUser.accessToken,
+            },
+          }
+        )
         .then((response) => {
           this.reviews = response.data;
         })
@@ -102,7 +106,7 @@ export default {
       }
       axios
         .post(
-          "http://localhost:8080/api/review",
+          "https://powerful-scrubland-44605.herokuapp.com/api/review",
           {
             professorsName: this.professor,
             studentsName: this.store.currentUser.username,

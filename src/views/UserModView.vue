@@ -84,7 +84,7 @@ export default {
         this.$router.push({ name: "home" });
       }
       axios
-        .get("http://localhost:8080/api/user/all", {
+        .get("https://powerful-scrubland-44605.herokuapp.com/api/user/all", {
           headers: {
             Authorization: "Bearer " + this.store.currentUser.accessToken,
           },
@@ -102,12 +102,14 @@ export default {
     if (this.publicKey) {
       return;
     }
-    axios.get("http://localhost:8080/api/auth/key").then((response) => {
-      if (response.data.message) {
-        localStorage.setItem("publicKey", response.data.message);
-        this.publicKey = response.data.message;
-      }
-    });
+    axios
+      .get("https://powerful-scrubland-44605.herokuapp.com/api/auth/key")
+      .then((response) => {
+        if (response.data.message) {
+          localStorage.setItem("publicKey", response.data.message);
+          this.publicKey = response.data.message;
+        }
+      });
   },
   methods: {
     click(user) {
@@ -121,11 +123,15 @@ export default {
       encrypt.setPublicKey(this.publicKey);
       this.newUser.password = encrypt.encrypt(this.newUser.password);
       axios
-        .post("http://localhost:8080/api/auth/signup", this.newUser, {
-          headers: {
-            Authorization: "Bearer " + this.store.currentUser.accessToken,
-          },
-        })
+        .post(
+          "https://powerful-scrubland-44605.herokuapp.com/api/auth/signup",
+          this.newUser,
+          {
+            headers: {
+              Authorization: "Bearer " + this.store.currentUser.accessToken,
+            },
+          }
+        )
         .then((response) => {
           window.location.reload();
         })

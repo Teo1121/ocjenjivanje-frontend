@@ -84,7 +84,8 @@ export default {
       }
       axios
         .get(
-          "http://localhost:8080/api/review/" + this.selectedProfessor.name,
+          "https://powerful-scrubland-44605.herokuapp.com/api/review/" +
+            this.selectedProfessor.name,
           {
             headers: {
               Authorization: "Bearer " + this.store.currentUser.accessToken,
@@ -113,7 +114,8 @@ export default {
       }
       axios
         .put(
-          "http://localhost:8080/api/professor/" + this.selectedProfessor.name,
+          "https://powerful-scrubland-44605.herokuapp.com/api/professor/" +
+            this.selectedProfessor.name,
           newProfessor,
           {
             headers: {
@@ -132,7 +134,8 @@ export default {
     del() {
       axios
         .delete(
-          "http://localhost:8080/api/professor/" + this.selectedProfessor.name,
+          "https://powerful-scrubland-44605.herokuapp.com/api/professor/" +
+            this.selectedProfessor.name,
           {
             headers: {
               Authorization: "Bearer " + this.store.currentUser.accessToken,

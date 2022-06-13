@@ -56,9 +56,12 @@ export default {
   },
   mounted() {
     axios
-      .get("http://localhost:8080/api/auth/refreshToken", {
-        withCredentials: true,
-      })
+      .get(
+        "https://powerful-scrubland-44605.herokuapp.com/api/auth/refreshToken",
+        {
+          withCredentials: true,
+        }
+      )
       .then((response) => {
         if (response.data.accessToken) {
           store.currentUser = response.data;
@@ -74,12 +77,14 @@ export default {
       return;
     }
 
-    axios.get("http://localhost:8080/api/auth/key").then((response) => {
-      if (response.data.message) {
-        localStorage.setItem("publicKey", response.data.message);
-        this.publicKey = response.data.message;
-      }
-    });
+    axios
+      .get("https://powerful-scrubland-44605.herokuapp.com/api/auth/key")
+      .then((response) => {
+        if (response.data.message) {
+          localStorage.setItem("publicKey", response.data.message);
+          this.publicKey = response.data.message;
+        }
+      });
   },
   methods: {
     submit() {
@@ -89,7 +94,7 @@ export default {
       let pass = encrypt.encrypt(this.password);
       axios
         .post(
-          "http://localhost:8080/api/auth/login",
+          "https://powerful-scrubland-44605.herokuapp.com/api/auth/login",
           { username: this.email, password: pass },
           { withCredentials: true }
         )
