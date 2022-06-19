@@ -72,16 +72,10 @@ export default {
         console.log("refresh token exipered or non existant");
       });
 
-    this.publicKey = localStorage.getItem("publicKey");
-    if (this.publicKey) {
-      return;
-    }
-
     axios
       .get("https://powerful-scrubland-44605.herokuapp.com/api/auth/key")
       .then((response) => {
         if (response.data.message) {
-          localStorage.setItem("publicKey", response.data.message);
           this.publicKey = response.data.message;
         }
       });
@@ -105,7 +99,6 @@ export default {
           }
         })
         .catch((error) => {
-          localStorage.removeItem("publicKey");
           this.error = error.message;
         });
     },

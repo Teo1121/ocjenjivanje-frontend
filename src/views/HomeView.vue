@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <h1 class="mb-4">Ocjenjivanje Professora i Assistenta</h1>
+    <h1 class="mb-4">Ocjenjivanje Profesora i Asistenta</h1>
     <img alt="students" src="../assets/student-plan-landing-2x.png" />
   </div>
 </template>

@@ -1,7 +1,7 @@
 <template>
   <p>{{ professor }}</p>
   <div class="review" v-for="review in reviews" :key="review">
-    <p class="title">{{ review.studentsName }}, ocjena:{{ review.score }}</p>
+    <p class="title">{{ review.studentsName }}, score:{{ review.score }}</p>
     <div>
       <p class="comment">{{ review.comment }}</p>
     </div>
