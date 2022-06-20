@@ -2,11 +2,7 @@
   <nav>
     <p v-if="store.currentUser">Welcome {{ store.currentUser.username }}</p>
     <router-link to="/">Home</router-link> |
-    <router-link to="/list">{{
-      store.currentUser && store.currentUser.roles.includes("ROLE_ADMIN")
-        ? "Professor List"
-        : "Review"
-    }}</router-link>
+    <router-link to="/list">Professor List</router-link>
     <span
       v-if="store.currentUser && store.currentUser.roles.includes('ROLE_ADMIN')"
     >
