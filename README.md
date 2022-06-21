@@ -1,19 +1,7 @@
-# ocjenjivanje-frontend
+# Ocjenjivanje Profesora i Asistenta
 
-## Project setup
-```
-npm install
-```
+## Opis:
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+Pomoću ove aplikacije se može ocijeniti profesore i asistente. Studenti mogu ocijeniti, usporediti i komentirati profesore i asistente. Te se informacije mogu zabilježiti kao javne da svi prijavljeni korisnici mogu vidjeti tko je objavio, ili privatne da se zamijeni ime student s Anon. Grupe korisnika su studenti s pohvalama ili žalbama na profesore/asistente, te administracija sveučilišta.
 
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+![slike frontenda 1](src/assets/list%20professors%20admin%20mod.png)
